@@ -2,7 +2,7 @@ SOURCE_DIR = src
 BIN_DIR = bin
 BUILD_DIR = build
 CC = gcc
-CFLAGS = -Wall -I/usr/include/ -I.
+CFLAGS = -std=gnu99  -Wall -I/usr/include/ -I. 
 LDFLAGS = -lncurses
 EXECUTABLE = $(BIN_DIR)/gameOfLife  
 
