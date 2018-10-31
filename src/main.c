@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
-
-
 #include "gameOfLife.h"
 
+/*The team used GitHub to help coordinate the members. THerefor,
+it is difficult to determine exactly which member did with part of the code,
+as there where updates, merges, etc, made by all.*/
+
+//Coder 4
 void menu(){
   char opt;
 

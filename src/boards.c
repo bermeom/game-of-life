@@ -3,12 +3,15 @@
 
 
 //Definition of the different available boards
+
+
+//Coder 1
 void setupBlinkerP2(bool *board,int *n,int *m){
   board[getPos(4,3,*m)] = true;
   board[getPos(4,4,*m)] = true;
   board[getPos(4,5,*m)] = true;
 }
-
+//Coder 1
 void setupBeacon(bool *board,int *n,int *m){
   board[getPos(2,2,*m)] = true;
   board[getPos(2,3,*m)] = true;
@@ -17,7 +20,7 @@ void setupBeacon(bool *board,int *n,int *m){
   board[getPos(5,4,*m)] = true;
   board[getPos(4,5,*m)] = true;
 }
-
+//Coder 1
 void setupRpentomino(bool *board,int *n,int *m){
   board[getPos(10,35,*m)] = true;
   board[getPos(10,36,*m)] = true;
@@ -25,7 +28,7 @@ void setupRpentomino(bool *board,int *n,int *m){
   board[getPos(11,35,*m)] = true;
   board[getPos(12,35,*m)] = true;
 }
-
+//Coder 2
 void setupDieHard(bool *board,int *n,int *m){
   board[getPos(10,20,*m)] = true;
   board[getPos(10,21,*m)] = true;
@@ -36,7 +39,7 @@ void setupDieHard(bool *board,int *n,int *m){
   board[getPos(11,27,*m)] = true;
   board[getPos(9,26,*m)] = true;
 }
-
+//Coder 1
 void setupAcron(bool *board,int *n,int *m){
   board[getPos(11,20,*m)] = true;
   board[getPos(11,21,*m)] = true;
@@ -47,7 +50,7 @@ void setupAcron(bool *board,int *n,int *m){
   board[getPos(11,25,*m)] = true;
   board[getPos(11,26,*m)] = true;
 }
-
+//Coder 2
 void setupvideo1(bool *board,int *n,int *m){
   board[getPos(10,10,*m)] = true;
   board[getPos(10,11,*m)] = true;

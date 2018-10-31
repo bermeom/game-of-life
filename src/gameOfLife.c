@@ -5,6 +5,8 @@
 #include "boards.h"
 
 //Start curses mode
+
+//Coder 3
 int initall(void)
 {
 	initscr();
@@ -34,6 +36,7 @@ void printBoard(bool *board,int *n,int *m){
   }
 }
 
+//Coder 1&2
 //Neighbors vector
 int x[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int y[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -72,7 +75,7 @@ void updateBoard(bool *currboard,bool *newboard,int *n,int *m){
   }
 }
 
-
+//Coder 3&4
 void run(int board_id,int itrns){
   int n = 30,m = 60,k0=0,k1=1;    //n = rows  m = columns
   // We create two boards which will update each other in order to save memory
