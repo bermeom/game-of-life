@@ -9,9 +9,10 @@
 void menu(){
   char opt;
 
-  initall();   
+  initall(); //start ncurses   
     do{
-    move(0,0);attron(A_BOLD);
+    move(0,0);attron(A_BOLD); //cursor to begining of the board
+    //Menu to choose the different boards available
     printw(" Welcome to game of life !! \n");
     printw(" ------------------------- \n\n");
     printw(" Menu: \n");
@@ -26,6 +27,7 @@ void menu(){
     opt = getch();
     attroff(A_BOLD);
     switch(opt){
+	//Run with the chosen board
         case ('0'):run(0,200);  break;
         case ('1'):run(1,200);  break;
         case ('2'):run(2,200);  break;
@@ -33,10 +35,10 @@ void menu(){
         case ('4'):run(4,200);  break;
         case ('5'):run(5,200);  break;
     }
-    clear();
-    }while(opt!='e');
+    clear(); //Clear screen
+    }while(opt!='e'); //Exit 
   
-  enditall();
+  enditall(); //return to default terminal screen
  }
 
 int main(){

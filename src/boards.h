@@ -1,6 +1,8 @@
 #ifndef BOARDS_H
 #define BOARDS_H
 
+//Initialization of the different boards available
+
 void setupBlinkerP2(bool *board,int *n,int *m);
 
 void setupBeacon(bool *board,int *n,int *m);

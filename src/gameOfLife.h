@@ -4,6 +4,7 @@
 
 #include "boards.h"
 
+//Functions initiallization
 int initall(void);
 int enditall(void);
 int getPos(int i, int j, int m);

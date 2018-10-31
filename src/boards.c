@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
+//Definition of the different available boards
 void setupBlinkerP2(bool *board,int *n,int *m){
   board[getPos(4,3,*m)] = true;
   board[getPos(4,4,*m)] = true;
