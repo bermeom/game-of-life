@@ -4,9 +4,10 @@
 #include <ncurses.h>
 #include "gameOfLife.h"
 
-/*The team used GitHub to help coordinate the members. THerefor,
+/*The team used GitHub to help coordinate the members. Therefor,
 it is difficult to determine exactly which member did with part of the code,
 as there where updates, merges, etc, made by all.*/
+
 
 //Coder 4
 void menu(){
@@ -19,13 +20,13 @@ void menu(){
     printw(" Welcome to game of life !! \n");
     printw(" ------------------------- \n\n");
     printw(" Menu: \n");
-    printw("  0. BlinkerP2  Board\n");
-    printw("  1. Beacon  Board\n");
-    printw("  2. Rpentomino  Board\n");
-    printw("  3. DieHard  Board\n");
-    printw("  4. Acron  Board\n");
-    printw("  5. video1  Board\n");
-    printw("  e. Exit \n");
+    printw("  0. BlinkerP2 Board\n");
+    printw("  1. Beacon Board\n");
+    printw("  2. R-pentomino Board\n");
+    printw("  3. DieHard Board\n");
+    printw("  4. Acron Board\n");
+    printw("  5. video1 Board\n");
+    printw("  e. Exit\n");
     printw("  Choose an option? ");
     opt = getch();
     attroff(A_BOLD);
@@ -43,7 +44,7 @@ void menu(){
 
   enditall(); //return to default terminal screen
  }
- 
+
 void menuV2(){
   char opt;
 
@@ -53,13 +54,13 @@ void menuV2(){
     printw(" Welcome to game of life !! \n");
     printw(" ------------------------- \n\n");
     printw(" Menu: \n");
-    printw("  0. BlinkerP2  Board\n");
-    printw("  1. Beacon  Board\n");
-    printw("  2. Rpentomino  Board\n");
-    printw("  3. DieHard  Board\n");
-    printw("  4. Acron  Board\n");
-    printw("  5. video1  Board\n");
-    printw("  e. Exit \n");
+    printw("  0. BlinkerP2 Board\n");
+    printw("  1. Beacon Board\n");
+    printw("  2. R-pentomino Board\n");
+    printw("  3. DieHard Board\n");
+    printw("  4. Acron Board\n");
+    printw("  5. video1 Board\n");
+    printw("  e. Exit\n");
     printw("  Choose an option? ");
     opt = getch();
     attroff(A_BOLD);
@@ -78,7 +79,9 @@ void menuV2(){
  }
 
 int main(){
+  // Solution 1
   // menu();
+  // Solution 2
   menuV2();
   return 0;
 }

@@ -1,5 +1,15 @@
+# Author: Miguel Angel Bermeo Ayebe
+# ID Coder: 1
+# This Makefile compile the project using the command: 
+# $ make
+# And create two folders,
+#   'build' with .o files and 'bin' with executable file
+
+# Source code directory 
 SOURCE_DIR = src
+ # Executable directory
 BIN_DIR = bin
+# .o directory
 BUILD_DIR = build
 CC = gcc
 CFLAGS = -std=gnu99  -Wall -I/usr/include/ -I. 

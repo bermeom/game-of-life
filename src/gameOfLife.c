@@ -8,7 +8,7 @@
 
 //Start curses mode
 
-//Coder 3
+
 int initall(void)
 {
 	initscr();
@@ -22,7 +22,6 @@ int enditall(void)
 	return 0;
 };
 
-
 struct Coordinate{
   int i; // row
   int j; // column
@@ -32,6 +31,8 @@ struct Coordinate{
 int getPos(int i, int j, int m){
   return m*i+j;
 }
+
+// Coder: 1
 // Obtaining i and j coordinate form index
 struct Coordinate getCor(int id, int m){
   struct Coordinate coord;
@@ -50,7 +51,6 @@ void printBoard(bool *board,int *n,int *m){
   }
 }
 
-//Coder 1&2
 //Neighbors vector
 int x[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int y[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -89,7 +89,7 @@ void updateBoard(bool *currboard,bool *newboard,int *n,int *m){
   }
 }
 
-//Coder 3&4
+// Coder: 4 and 3
 void run(int board_id,int itrns){
   int n = 30,m = 60,k0=0,k1=1;    //n = rows  m = columns
   // We create two boards which will update each other in order to save memory
@@ -126,6 +126,7 @@ void run(int board_id,int itrns){
 	free(board);
 }
 
+// Coder: 1
 // New version to show the board from the terminal, using only live cells and the new dead 
 // cells with complexity:
 // O (n) = I + D,
@@ -147,9 +148,10 @@ void printBoardV2(int *liveCells,int *tamLC,
   }
 }
 
+// Coder: 1 and 2
 // The new version of the code to update the board requires two more arrays,
 // liveCells and deadCells. Evaluate each living cell if it is kept alive or
-// not, and the vicinities of the dead cells, then the liveCells array and 
+// not, and neighboring dead cells, then the liveCells array and 
 // the deadCells array are updated as the case may be.
 //  The complexity is:
 //  O(L) = L
@@ -175,6 +177,7 @@ void updateBoardV2(bool **board,
       // Evaluation of dead cells around the live cell
       for(k = 0; k < 8; k++){
         if(isValidPos(coord.i+x[k],coord.j+y[k],n,m)){
+          // It is important to validate if the cell is dead on the old board and the new one.
           if(!board[0][getPos(coord.i+x[k],coord.j+y[k],*m)] 
               && !board[1][getPos(coord.i+x[k],coord.j+y[k],*m)] ){
             board[1][getPos(coord.i+x[k],coord.j+y[k],*m)]=isAlive(board[0],n,m,coord.i+x[k],coord.j+y[k]);
@@ -198,6 +201,7 @@ void updateBoardV2(bool **board,
   *tamLC = newtamLC;
 }
 
+// Coder: 1
 // This function is used the first time to find live cells and is added to
 //  the liveCells array.
 void getLiveCells(bool *board,
@@ -215,20 +219,23 @@ void getLiveCells(bool *board,
   }
 }
 
+// Coder: 1
 // The new version of the run function using the new solution.
 void runV2  (int board_id,int itrns){
   move(0,0);
   int n = 30,m = 60,tamLC=0,tamDC=0;    //n = rows  m = columns
+  // An array of boards with size 2 to be exchanged each time it is updated.
   bool **board = (bool **) malloc((2)*sizeof(bool*)); 
+  // Same with liveCells array, to be exchanged each time it is updated.  
   int **liveCells =  (int **) malloc((2)*sizeof(int*)); 
   int *deadCells = (int *) malloc(n*m*sizeof(int));
   board[0] = (bool *) malloc(n*m*sizeof(bool));  // Create a vector of n by m
   board[1] = (bool *) malloc(n*m*sizeof(bool));  // Create a vector of n by m
   liveCells[0] = (int *) malloc(n*m*sizeof(int));  // Create a vector 
   liveCells[1] = (int *) malloc(n*m*sizeof(int));  // Create a vector 
-  
-
+  // Initialization of the board.
   memset(board[0],0,n*m);
+  // Load board.
   switch(board_id){
     case(0):setupBlinkerP2(board[0],&n,&m);break;
     case(1):setupBeacon(board[0],&n,&m);break;
@@ -238,6 +245,7 @@ void runV2  (int board_id,int itrns){
     case(5):setupvideo1(board[0],&n,&m);break;
     default: setupAcron(board[0],&n,&m);
   }
+  
   getLiveCells(board[0],&n,&m,liveCells[0],&tamLC);
   printBoard(board[0],&n,&m);
     
@@ -249,7 +257,7 @@ void runV2  (int board_id,int itrns){
     usleep((int)3e4);
     updateBoardV2(board,&n,&m,liveCells,&tamLC,deadCells,&tamDC);
   }
-  
+  // Freeing memory
   free(board[0]);
   free(board[1]);
   free(board);
