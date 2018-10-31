@@ -9,7 +9,7 @@
 void menu(){
   char opt;
 
-  initall(); //start ncurses   
+  initall(); //start ncurses
     do{
     move(0,0);attron(A_BOLD); //cursor to begining of the board
     //Menu to choose the different boards available
@@ -36,8 +36,8 @@ void menu(){
         case ('5'):run(5,200);  break;
     }
     clear(); //Clear screen
-    }while(opt!='e'); //Exit 
-  
+    }while(opt!='e'); //Exit
+
   enditall(); //return to default terminal screen
  }
 

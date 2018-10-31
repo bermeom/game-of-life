@@ -7,14 +7,14 @@
 //Start curses mode
 int initall(void)
 {
-	initscr();			
+	initscr();
 	return 0;
 };
 
 //Restore terminal
 int enditall(void)
 {
-	endwin();			
+	endwin();
 	return 0;
 };
 
@@ -25,11 +25,11 @@ int getPos(int i, int j, int m){
 
 
 void printBoard(bool *board,int *n,int *m){
-  move(0,0); //Move the cursor at the begining 
+  move(0,0); //Move the cursor at the begining
   for (int i = 0; i < *n; i++){
     for (int j = 0; j < *m; j++){
       //Print the character to the live cells of the board
-      mvaddch(i,j,board[getPos(i,j,*m)]?( 'O'):' ');   
+      mvaddch(i,j,board[getPos(i,j,*m)]?( 'O'):' ');
     }
   }
 }
@@ -68,7 +68,7 @@ void updateBoard(bool *currboard,bool *newboard,int *n,int *m){
   for (int i = 0; i < *n; i++){
     for (int j = 0; j < *m; j++){
        newboard[getPos(i,j,*m)]=isAlive(currboard,n,m,i,j); //Check for each position if it's alive
-    } //Save the results in te new board
+    } //Save the results in the new board
   }
 }
 
@@ -76,10 +76,10 @@ void updateBoard(bool *currboard,bool *newboard,int *n,int *m){
 void run(int board_id,int itrns){
   int n = 30,m = 60,k0=0,k1=1;    //n = rows  m = columns
   // We create two boards which will update each other in order to save memory
-  bool **board = (bool **) malloc(2*sizeof(bool*)); 
+  bool **board = (bool **) malloc(2*sizeof(bool*));
   board[k0] = (bool *) malloc(n*m*sizeof(bool));  // Create a vector of n by m
   board[k1] = (bool *) malloc(n*m*sizeof(bool));  // Create a vector of n by m
-  
+
   memset(board[k0],0,n*m); //Initialize the board
   switch(board_id){ //Choose the board
     case(0):setupBlinkerP2(board[k0],&n,&m);break;
@@ -90,7 +90,7 @@ void run(int board_id,int itrns){
     case(5):setupvideo1(board[k0],&n,&m);break;
     default: setupAcron(board[k0],&n,&m);
   }
-  
+
   for(int f = 0; f < itrns; ++f){
     printBoard(board[k0],&n,&m);
     move(n+1,0);attron(A_BOLD); //Move the cursor outside the board
@@ -100,10 +100,11 @@ void run(int board_id,int itrns){
     updateBoard(board[k0],board[k1],&n,&m);
     move(0,0);attron(A_BOLD); //Return the cursor to the board
     //We exchange the two boards avoiding to create a new one for updating, saving memory
-    k0 = (k0+1)%2; 
-    k1 = (k1+1)%2; 
+    k0 = (k0+1)%2;
+    k1 = (k1+1)%2;
   }
-  //Once the iterations have finish, we free the space of the two boards
+  //Once the iterations have finished, we free the space of the two boards
   free(board[k0]);
   free(board[k1]);
+	free(board);
 }
