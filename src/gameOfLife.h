@@ -14,4 +14,16 @@ bool isAlive(bool *board, int *n, int *m, int i, int j);
 void updateBoard(bool *currboard,bool *newboard,int *n,int *m);
 void run(int board_id,int itrns);
 
+void printBoardV2(int *liveCells,int *tamLC,
+                   int *deadCells,int *tamDC,int *m);
+void updateBoardV2(bool **board,
+                   int *n,int *m,
+                   int **liveCells,int *tamLC,
+                   int *deadCells,int *tamDC);
+void getLiveCells(bool *board,
+                   int *n,int *m,
+                   int *liveCells,int *tamLC);
+
+void runV2  (int board_id,int itrns);
+
 #endif

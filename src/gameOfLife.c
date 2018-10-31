@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <ncurses.h>
-// #include <utime.h>
+#include <unistd.h>
 
 #include "boards.h"
 
@@ -20,11 +22,23 @@ int enditall(void)
 	return 0;
 };
 
-//Obtaining the cell position
+
+struct Coordinate{
+  int i; // row
+  int j; // column
+};
+
+//Obtaining the index for the representation of the board from an array using i and j
 int getPos(int i, int j, int m){
   return m*i+j;
 }
-
+// Obtaining i and j coordinate form index
+struct Coordinate getCor(int id, int m){
+  struct Coordinate coord;
+  coord.i = id/m; // i
+  coord.j = id-coord.i*m; // j
+  return coord;
+}
 
 void printBoard(bool *board,int *n,int *m){
   move(0,0); //Move the cursor at the begining
@@ -110,4 +124,138 @@ void run(int board_id,int itrns){
   free(board[k0]);
   free(board[k1]);
 	free(board);
+}
+
+// New version to show the board from the terminal, using only live cells and the new dead 
+// cells with complexity:
+// O (n) = I + D,
+// where, L is the number of living cells and D the number of dead cells
+void printBoardV2(int *liveCells,int *tamLC,
+                   int *deadCells,int *tamDC,int *m){
+  move(0,0);
+  int i;
+  struct Coordinate coord;
+  // print live cells
+  for (i = 0; i < *tamLC; ++i){
+      coord = getCor(liveCells[i],*m);
+      mvaddch(coord.i,coord.j,('O'));
+  }
+  // erase live cells or print dead cells
+  for (i = 0; i < *tamDC; ++i){
+      coord = getCor(deadCells[i],*m);
+      mvaddch(coord.i,coord.j,(' '));
+  }
+}
+
+// The new version of the code to update the board requires two more arrays,
+// liveCells and deadCells. Evaluate each living cell if it is kept alive or
+// not, and the vicinities of the dead cells, then the liveCells array and 
+// the deadCells array are updated as the case may be.
+//  The complexity is:
+//  O(L) = L
+//  where, L is the number of living cells.
+void updateBoardV2(bool **board,
+                   int *n,int *m,
+                   int **liveCells,int *tamLC,
+                   int *deadCells,int *tamDC){
+  int i,k,newtamLC = 0;
+  struct Coordinate coord;
+  *tamDC=0;
+  move(0,0);
+  for (i = 0; i < *tamLC; ++i){
+      coord = getCor(liveCells[0][i],*m);
+      board[1][liveCells[0][i]]=isAlive(board[0],n,m,coord.i,coord.j);
+      if (board[1][liveCells[0][i]]){
+         liveCells[1][newtamLC] = liveCells[0][i];
+         ++newtamLC;
+      }else{
+        deadCells[(*tamDC)]=liveCells[0][i];
+        (*tamDC)++;
+      }
+      // Evaluation of dead cells around the live cell
+      for(k = 0; k < 8; k++){
+        if(isValidPos(coord.i+x[k],coord.j+y[k],n,m)){
+          if(!board[0][getPos(coord.i+x[k],coord.j+y[k],*m)] 
+              && !board[1][getPos(coord.i+x[k],coord.j+y[k],*m)] ){
+            board[1][getPos(coord.i+x[k],coord.j+y[k],*m)]=isAlive(board[0],n,m,coord.i+x[k],coord.j+y[k]);
+            if (board[1][getPos(coord.i+x[k],coord.j+y[k],*m)]){
+              liveCells[1][newtamLC] = getPos(coord.i+x[k],coord.j+y[k],*m);
+              ++newtamLC;
+            }
+          }
+        }
+      }
+  }
+  // Swapping pointers
+  int *aux = liveCells[0];  
+  liveCells[0] = liveCells[1];
+  liveCells[1] = aux; 
+  bool *auxb = board[0];  
+  board[0] = board[1];
+  board[1] = auxb;
+  memset(board[1],0,(*n)*(*m)); 
+  // Update new length of the live cells array 
+  *tamLC = newtamLC;
+}
+
+// This function is used the first time to find live cells and is added to
+//  the liveCells array.
+void getLiveCells(bool *board,
+                   int *n,int *m,
+                   int *liveCells,int *tamLC){
+  int i,j;
+  (*tamLC)=0;
+  for ( i = 0; i < *n; i++){
+    for ( j = 0; j < *m; j++){
+      if (board[getPos(i,j,*m)]){
+          liveCells[(*tamLC)]=getPos(i,j,*m);
+          ++(*tamLC);
+      }
+    }
+  }
+}
+
+// The new version of the run function using the new solution.
+void runV2  (int board_id,int itrns){
+  move(0,0);
+  int n = 30,m = 60,tamLC=0,tamDC=0;    //n = rows  m = columns
+  bool **board = (bool **) malloc((2)*sizeof(bool*)); 
+  int **liveCells =  (int **) malloc((2)*sizeof(int*)); 
+  int *deadCells = (int *) malloc(n*m*sizeof(int));
+  board[0] = (bool *) malloc(n*m*sizeof(bool));  // Create a vector of n by m
+  board[1] = (bool *) malloc(n*m*sizeof(bool));  // Create a vector of n by m
+  liveCells[0] = (int *) malloc(n*m*sizeof(int));  // Create a vector 
+  liveCells[1] = (int *) malloc(n*m*sizeof(int));  // Create a vector 
+  
+
+  memset(board[0],0,n*m);
+  switch(board_id){
+    case(0):setupBlinkerP2(board[0],&n,&m);break;
+    case(1):setupBeacon(board[0],&n,&m);break;
+    case(2):setupRpentomino(board[0],&n,&m);break;
+    case(3):setupDieHard(board[0],&n,&m);break;
+    case(4):setupAcron(board[0],&n,&m);break;
+    case(5):setupvideo1(board[0],&n,&m);break;
+    default: setupAcron(board[0],&n,&m);
+  }
+  getLiveCells(board[0],&n,&m,liveCells[0],&tamLC);
+  printBoard(board[0],&n,&m);
+    
+  for(int f = 0; f < itrns; ++f){
+    printBoardV2(liveCells[0],&tamLC,deadCells,&tamDC,&m);
+    attron(A_BOLD); move(n+1,0);
+    printw(" Iteration: %d",f);    attroff(A_BOLD);
+    refresh();
+    usleep((int)3e4);
+    updateBoardV2(board,&n,&m,liveCells,&tamLC,deadCells,&tamDC);
+  }
+  
+  free(board[0]);
+  free(board[1]);
+  free(board);
+  free(liveCells[0]);
+  free(liveCells[1]);
+  free(liveCells);
+  free(deadCells);
+  
 }

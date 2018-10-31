@@ -43,8 +43,42 @@ void menu(){
 
   enditall(); //return to default terminal screen
  }
+ 
+void menuV2(){
+  char opt;
+
+  initall();   
+    do{
+    move(0,0);attron(A_BOLD);
+    printw(" Welcome to game of life !! \n");
+    printw(" ------------------------- \n\n");
+    printw(" Menu: \n");
+    printw("  0. BlinkerP2  Board\n");
+    printw("  1. Beacon  Board\n");
+    printw("  2. Rpentomino  Board\n");
+    printw("  3. DieHard  Board\n");
+    printw("  4. Acron  Board\n");
+    printw("  5. video1  Board\n");
+    printw("  e. Exit \n");
+    printw("  Choose an option? ");
+    opt = getch();
+    attroff(A_BOLD);
+    switch(opt){
+        case ('0'):runV2(0,200);  break;
+        case ('1'):runV2(1,200);  break;
+        case ('2'):runV2(2,200);  break;
+        case ('3'):runV2(3,200);  break;
+        case ('4'):runV2(4,200);  break;
+        case ('5'):runV2(5,200);  break;
+    }
+    clear();
+    }while(opt!='e');
+  
+  enditall();
+ }
 
 int main(){
-  menu();
+  // menu();
+  menuV2();
   return 0;
 }
